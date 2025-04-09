@@ -1,124 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <title>GST/HST Calculator</title>
-    <style>
-
-       
-        #calculator-container {
-            font-family: Montserrat, sans-serif;
-            background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            height:20vh;
-       
-        }
-        .calculator-wrapper {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        #calculator-container .header-container h1,  #calculator-container .header-container h2 {
-            display: inline;
-            margin: 0;
-        }
-        #calculator-container .header-container h1 {
-            font-family: 'Montserrat', sans-serif;
-            color: #006cab;
-            font-size: 30pt;
-            align-items: left;
-            font-weight: bold;
-            align-self: left; 
-        }
-        #calculator-container .header-container h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: #006cab;
-            font-size: 30pt;
-            align-items: left;
-            font-weight: bold;
-            align-self: left; 
-        } 
-        .calculator {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 10px 10px;
-
-        }
-        #calculator-container label {
-            font-family: 'League Spartan', sans-serif;        
-            font-weight: bold;
-            font-size: 12pt;
-            margin-bottom: 10px;
-        }
-        #calculator-container input {
-            padding: 10px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: bold;
-            font-size: 20pt;
-            border: 0px;
-            border-radius: 10px;
-            text-align: center;
-            color: #ffffff;
-            background-color: #006cab;
-            width: 250px;
-        }
-        #calculator-container input[readonly], #calculator-container select {
-        background-color: #DEF2F4;
-        padding: 10px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: bold;
-        font-size: 20pt;
-        color: #006cab;
-        border: 0px;
-        border-radius: 10px;
-        text-align: center;
-        width: 250px;
-        }
-        
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedded GST/HST Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Montserrat, sans-serif;
+    }
+    #calculator-container {
+      font-family: Montserrat, sans-serif;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .calculator-wrapper {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .header-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header-container h1,
+    .header-container h2 {
+      display: inline;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: #006cab;
+      font-size: 30pt;
+      font-weight: bold;
+    }
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: end;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label {
+      font-family: 'League Spartan', sans-serif;
+      font-weight: bold;
+      font-size: 12pt;
+      margin-bottom: 10px;
+    }
+    input, select {
+      padding: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      font-size: 20pt;
+      border: 0px;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+      max-width: 250px;
+    }
+    input[type="text"] {
+      color: #ffffff;
+      background-color: #006cab;
+    }
+    input[readonly], select {
+      background-color: #DEF2F4;
+      color: #006cab;
+    }
+  </style>
 </head>
 <body>
-    <div id="calculator-container">
-        <div class="calculator-wrapper">
-            <div class="header-container">
-                <h1>FREE REBATE</h1><h2> CALCULATOR</h2>
-            </div>
-            <div class="calculator">
-                <div class="input-group">
-                    <label for=“fair-market-value">ENTER MARKET PRICE</label>
-                    <input type="text" id="fair-market-value" value="0">
-                </div>
-                <div class="input-group">
-                    <label for="province">PROVINCE</label>
-                    <select id="province">
-                        <option value="ON">Ontario</option>
-                        <option value="BC">B.C.</option>
-                        <option value="AB">Alberta</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="gst">GST</label>
-                    <input type="text" id="gst" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="pst">PST</label>
-                    <input type="text" id="pst" readonly>
-                </div>
-            </div>
+  <div id="calculator-container">
+    <div class="calculator-wrapper">
+      <div class="header-container">
+        <h1>FREE REBATE</h1><h2> CALCULATOR</h2>
+      </div>
+      <div class="calculator">
+        <div class="input-group">
+          <label for="fair-market-value">ENTER MARKET PRICE</label>
+          <input type="text" id="fair-market-value" value="0">
         </div>
+        <div class="input-group">
+          <label for="province">PROVINCE</label>
+          <select id="province">
+            <option value="ON">Ontario</option>
+            <option value="BC">B.C.</option>
+            <option value="AB">Alberta</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="gst">GST</label>
+          <input type="text" id="gst" readonly>
+        </div>
+        <div class="input-group">
+          <label for="pst">PST</label>
+          <input type="text" id="pst" readonly>
+        </div>
+      </div>
     </div>
+  </div>
 
+  <script>
+    function prependDollarSymbol(value) {
+      value = value.replace(/[^0-9.-]+/g, "");
+      return '$' + formatNumberWithCommas(value);
+    }
+
+    function formatNumberWithCommas(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function calculateGSTHST() {
+      const fairMarketValue = parseFloat(document.getElementById('fair-market-value').value.replace(/[^0-9.-]+/g, "")) || 0;
+      const province = document.getElementById('province').value;
+      let gst = 0;
+      let pst = 0;
+
+      if (fairMarketValue > 450000 && province === "ON") {
+        gst = 0;
+        pst = 24000;
+      } else if (fairMarketValue > 450000 && province === "NS") {
+        gst = 0;
+        pst = 3000;
+      } else if (fairMarketValue > 450000 && !["ON", "NS"].includes(province)) {
+        gst = 0;
+      } else {
+        switch (province) {
+          case 'ON':
+            gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+            pst = Math.min(fairMarketValue * 0.08 * 0.75, 24000);
+            break;
+          case 'BC':
+          case 'AB':
+            gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+            pst = 0;
+            break;
+        }
+      }
+      document.getElementById('gst').value = `$${formatNumberWithCommas(gst.toFixed(0))}`;
+      document.getElementById('pst').value = `$${formatNumberWithCommas(pst.toFixed(0))}`;
+    }
+
+    document.getElementById('fair-market-value').addEventListener('input', function (e) {
+      e.target.value = prependDollarSymbol(e.target.value);
+      calculateGSTHST();
+    });
+
+    document.getElementById('province').addEventListener('change', calculateGSTHST);
+    calculateGSTHST();
+  </script>
 </body>
 </html>
