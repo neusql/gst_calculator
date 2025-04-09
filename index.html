@@ -7,8 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan&family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 10;
-      padding: 10;
+      margin: 0;
+      padding: 0;
       font-family: Montserrat, sans-serif;
     }
     #calculator-container {
@@ -17,7 +17,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 20px;
     }
     .calculator-wrapper {
       background-color: white;
@@ -42,15 +42,15 @@
     }
     .calculator {
       display: grid;
-      grid-template-columns: repeat(4, 5fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
       align-items: end;
     }
     .input-group {
       display: flex;
       flex-direction: column;
-      align-items: stretch;
       justify-content: flex-end;
+      width: 100%
     }
     label {
       font-family: 'League Spartan', sans-serif;
@@ -67,6 +67,7 @@
       border-radius: 10px;
       text-align: center;
       width: 100%;
+      box-sizing: border-box;
     }
     input[type="text"] {
       color: #ffffff;
