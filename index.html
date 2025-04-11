@@ -118,6 +118,115 @@
             </div>
         </div>
     </div>
+ <script>
+        function prependDollarSymbol(value) {
+    value = value.replace(/[^0-9.-]+/g, "");
+    return '$' + formatNumberWithCommas(value);
+}
 
+function formatNumberWithCommas(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+        function calculateGSTHST() {
+            const fairMarketValue = parseFloat(document.getElementById('fair-market-value').value.replace(/[^0-9.-]+/g, "")) || 0;
+            const province = document.getElementById('province').value;
+            let gst = 0;
+            let pst = 0;
+            if (fairMarketValue > 450000 && province == "ON") {
+                gst = 0;
+                pst = 24000; 
+                }
+            else if (fairMarketValue > 450000 && province == "NS") {
+                gst = 0;
+                pst = 3000; 
+                }
+            else if (fairMarketValue > 450000 && !["ON","NS"].includes(province)) {
+                gst = 0; 
+                }
+             
+            else {
+                switch (province) {
+                    case 'ON':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = Math.min(fairMarketValue * 0.08 * 0.75, 24000);
+                      
+                        break;
+                    case 'BC':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0; // No HST in BC
+                        break;
+                    case 'AB':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0; // No HST in AB
+                        break;
+                     case 'QC':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        if (fairMarketValue < 200000) {
+                            pst = fairMarketValue * 0.09975 * 0.5;
+                            }
+                        else {
+                            pst = Math.max((300000 - fairMarketValue)/100000 * 9975, 0);
+                            }
+                        break;
+                    case 'SK':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = Math.min(fairMarketValue * 0.0252, 8820);
+                       
+                        if (fairMarketValue > 350000) {
+                            pst = (450000 - fairMarketValue)/100000 * pst;
+                        }
+                        break;
+                    case 'MN':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    case 'NB':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    case 'PEI':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    case 'NS':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = Math.min(fairMarketValue * 0.0188, 3000);
+                     
+                        break;
+                    case 'NFL':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    case 'YK':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    case 'NWT':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    case 'NV':
+                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+                        pst = 0;
+                        break;
+                    
+                    // Add more provinces as needed
+                }
+            }
+            document.getElementById('gst').value = `$${formatNumberWithCommas(gst.toFixed(0))}`;
+            document.getElementById('pst').value = `$${formatNumberWithCommas(pst.toFixed(0))}`;
+        }
+
+        document.getElementById('fair-market-value').addEventListener('input', function(e) {
+            e.target.value = prependDollarSymbol(e.target.value);
+            calculateGSTHST();
+        });
+
+        document.getElementById('province').addEventListener('change', calculateGSTHST);
+
+        // Initial calculation on page load
+        calculateGSTHST();
+    </script>
 </body>
 </html>
