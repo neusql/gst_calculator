@@ -1,232 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <title>GST/HST Calculator</title>
-    <style>
-
-       
-        #calculator-container {
-            font-family: Montserrat, sans-serif;
-            background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            height:20vh;       
-        }
-        .calculator-wrapper {
-            background-color: white;
-            padding: 20px 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        #calculator-container .header-container h1,  #calculator-container .header-container h2 {
-            display: inline;
-            margin: 0;
-        }
-        #calculator-container .header-container h1 {
-            font-family: 'Montserrat', sans-serif;
-            color: #006cab;
-            font-size: 30pt;
-            align-items: left;
-            font-weight: bold;
-            align-self: left; 
-        }
-        #calculator-container .header-container h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: #006cab;
-            font-size: 30pt;
-            align-items: left;
-            font-weight: bold;
-            align-self: left; 
-        } 
-        .calculator {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 10px 10px;
-
-        }
-        #calculator-container label {
-            font-family: 'League Spartan', sans-serif;        
-            font-weight: bold;
-            font-size: 12pt;
-            margin-bottom: 10px;
-        }
-        #calculator-container input {
-            padding: 10px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: bold;
-            font-size: 20pt;
-            border: 0px;
-            border-radius: 10px;
-            text-align: center;
-            color: #ffffff;
-            background-color: #006cab;
-            width: 230px;
-        }
-        #calculator-container input[readonly], #calculator-container select {
-        background-color: #DEF2F4;
-        padding: 10px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: bold;
-        font-size: 20pt;
-        color: #006cab;
-        border: 0px;
-        border-radius: 10px;
-        text-align: center;
-        width: 230px;
-        }
-        
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <title>Rebate Calculator</title>
+  <style>
+    #calculator-container{font-family:Montserrat,sans-serif;display:flex;justify-content:center;padding:12px}
+    .calculator-wrapper{padding:12px 14px;border-radius:10px;text-align:center}
+    .header-container h1,.header-container h2{display:inline;margin:0;color:#006cab;font-size:20pt;font-weight:700}
+    .calculator{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px}
+    .input-group{display:flex;flex-direction:column;align-items:center;gap:6px}
+    label{font-family:'League Spartan',sans-serif;font-weight:600;font-size:10pt}
+    input,select{padding:8px 10px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14pt;border:0;border-radius:10px;text-align:center;width:180px}
+    input:not([readonly]){color:#fff;background:#006cab}
+    input[readonly],select{background:#DEF2F4;color:#006cab}
+  </style>
 </head>
 <body>
-    <div id="calculator-container">
-        <div class="calculator-wrapper">
-            <div class="header-container">
-                <h1>FREE REBATE</h1><h2> CALCULATOR</h2>
-            </div>
-            <div class="calculator">
-                <div class="input-group">
-                    <label for=“fair-market-value">ENTER MARKET PRICE</label>
-                    <input type="text" id="fair-market-value" value="0">
-                </div>
-                <div class="input-group">
-                    <label for="province">PROVINCE</label>
-                    <select id="province">
-                        <option value="ON">Ontario</option>
-                        <option value="BC">B.C.</option>
-                        <option value="AB">Alberta</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="gst">GST</label>
-                    <input type="text" id="gst" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="pst">PST</label>
-                    <input type="text" id="pst" readonly>
-                </div>
-            </div>
+  <div id="calculator-container">
+    <div class="calculator-wrapper">
+      <div class="header-container">
+        <h1>FREE REBATE</h1><h2> CALCULATOR</h2>
+      </div>
+
+      <div class="calculator">
+        <div class="input-group">
+          <label for="fair-market-value">ENTER MARKET PRICE</label>
+          <input type="text" id="fair-market-value" value="$0">
         </div>
+
+        <div class="input-group">
+          <label for="province">PROVINCE</label>
+          <select id="province">
+            <option value="ON">Ontario</option>
+            <option value="BC">B.C.</option>
+            <option value="AB">Alberta</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="total-rebate">TOTAL REBATE (GST + PST)</label>
+          <input type="text" id="total-rebate" readonly value="$0">
+        </div>
+      </div>
     </div>
- <script>
-        function prependDollarSymbol(value) {
-    value = value.replace(/[^0-9.-]+/g, "");
-    return '$' + formatNumberWithCommas(value);
-}
+  </div>
 
-function formatNumberWithCommas(value) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+  <script>
+    // helpers
+    function formatNumberWithCommas(v){return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+    function prependDollarSymbol(v){v=v.replace(/[^0-9.-]+/g,"");return "$"+formatNumberWithCommas(v)}
 
-        function calculateGSTHST() {
-            const fairMarketValue = parseFloat(document.getElementById('fair-market-value').value.replace(/[^0-9.-]+/g, "")) || 0;
-            const province = document.getElementById('province').value;
-            let gst = 0;
-            let pst = 0;
-            if (fairMarketValue > 450000 && province == "ON") {
-                gst = 0;
-                pst = 24000; 
-                }
-            else if (fairMarketValue > 450000 && province == "NS") {
-                gst = 0;
-                pst = 3000; 
-                }
-            else if (fairMarketValue > 450000 && !["ON","NS"].includes(province)) {
-                gst = 0; 
-                }
-             
-            else {
-                switch (province) {
-                    case 'ON':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = Math.min(fairMarketValue * 0.08 * 0.75, 24000);
-                      
-                        break;
-                    case 'BC':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0; // No HST in BC
-                        break;
-                    case 'AB':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0; // No HST in AB
-                        break;
-                     case 'QC':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        if (fairMarketValue < 200000) {
-                            pst = fairMarketValue * 0.09975 * 0.5;
-                            }
-                        else {
-                            pst = Math.max((300000 - fairMarketValue)/100000 * 9975, 0);
-                            }
-                        break;
-                    case 'SK':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = Math.min(fairMarketValue * 0.0252, 8820);
-                       
-                        if (fairMarketValue > 350000) {
-                            pst = (450000 - fairMarketValue)/100000 * pst;
-                        }
-                        break;
-                    case 'MN':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    case 'NB':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    case 'PEI':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    case 'NS':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = Math.min(fairMarketValue * 0.0188, 3000);
-                     
-                        break;
-                    case 'NFL':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    case 'YK':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    case 'NWT':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    case 'NV':
-                        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-                        pst = 0;
-                        break;
-                    
-                    // Add more provinces as needed
-                }
-            }
-            document.getElementById('gst').value = `$${formatNumberWithCommas(gst.toFixed(0))}`;
-            document.getElementById('pst').value = `$${formatNumberWithCommas(pst.toFixed(0))}`;
+    function calculateRebate(){
+      const raw = document.getElementById("fair-market-value").value.replace(/[^0-9.-]+/g,"");
+      const fairMarketValue = parseFloat(raw) || 0;
+      const province = document.getElementById("province").value;
+
+      let gst = 0, pst = 0;
+
+      if (fairMarketValue > 450000){
+        if (province === "ON"){ gst = 0; pst = 24000; }
+        else { gst = 0; pst = 0; } // AB & BC: no rebate >$450k
+      } else {
+        // GST rebate (common)
+        gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
+
+        // PST / provincial rebate
+        if (province === "ON"){
+          pst = Math.min(fairMarketValue * 0.08 * 0.75, 24000);
+        } else {
+          pst = 0; // AB & BC: no provincial rebate here
         }
+      }
 
-        document.getElementById('fair-market-value').addEventListener('input', function(e) {
-            e.target.value = prependDollarSymbol(e.target.value);
-            calculateGSTHST();
-        });
+      const total = Math.max(0, gst + pst);
+      document.getElementById("total-rebate").value = "$" + formatNumberWithCommas(total.toFixed(0));
+    }
 
-        document.getElementById('province').addEventListener('change', calculateGSTHST);
+    // events
+    document.getElementById("fair-market-value").addEventListener("input", (e)=>{
+      e.target.value = prependDollarSymbol(e.target.value);
+      calculateRebate();
+    });
+    document.getElementById("province").addEventListener("change", calculateRebate);
 
-        // Initial calculation on page load
-        calculateGSTHST();
-    </script>
+    // init
+    calculateRebate();
+  </script>
 </body>
 </html>
