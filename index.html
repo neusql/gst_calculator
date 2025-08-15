@@ -6,15 +6,75 @@
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <title>Rebate Calculator</title>
   <style>
-    #calculator-container{font-family:Montserrat,sans-serif;display:flex;justify-content:center;padding:12px}
-    .calculator-wrapper{padding:12px 14px;border-radius:10px;text-align:center}
-    .header-container h1,.header-container h2{display:inline;margin:0;color:#006cab;font-size:20pt;font-weight:700}
-    .calculator{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px}
-    .input-group{display:flex;flex-direction:column;align-items:center;gap:6px}
-    label{font-family:'League Spartan',sans-serif;font-weight:600;font-size:10pt}
-    input,select{padding:8px 10px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14pt;border:0;border-radius:10px;text-align:center;width:180px}
-    input:not([readonly]){color:#fff;background:#006cab}
-    input[readonly],select{background:#DEF2F4;color:#006cab}
+    /* Container with smaller margin/padding */
+    #calculator-container{
+      font-family: Montserrat, sans-serif;
+      display:flex;justify-content:center;
+      padding:10px;                  /* <= 10px around the calculator */
+      background:#fff;
+    }
+
+    .calculator-wrapper{
+      margin:10px auto;              /* <= 10px margin */
+      padding:12px 14px;
+      border-radius:12px;
+      text-align:center;
+      max-width:420px;               /* comfy width for stacked layout */
+      width:100%;
+    }
+
+    .header-container h1,.header-container h2{
+      display:inline;margin:0;color:#006cab;font-size:20pt;font-weight:700;
+    }
+
+    /* Stacked column layout */
+    .calculator{
+      display:flex;
+      flex-direction:column;         /* <= stacked */
+      gap:12px;                      /* spacing between rows */
+      margin-top:12px;
+      align-items:center;
+    }
+
+    .input-group{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      width:100%;
+      max-width:360px;               /* keeps fields a nice width */
+      margin:0 auto;
+    }
+
+    label{
+      font-family:'League Spartan',sans-serif;
+      font-weight:600;
+      font-size:11pt;
+      text-align:left;
+      color:#114b6b;
+    }
+
+    input,select{
+      padding:10px 12px;
+      font-family:Montserrat,sans-serif;
+      font-weight:700;
+      font-size:15pt;
+      border:0;border-radius:10px;
+      text-align:center;
+      width:100%;
+    }
+
+    input:not([readonly]){color:#fff;background:#006cab;}
+    select, input[readonly]{background:#DEF2F4;color:#006cab;}
+
+    /* Accented final result style */
+    .result{
+      background:#006cab !important;
+      color:#fff !important;
+      font-size:20pt;                /* bigger, more prominent */
+      letter-spacing:0.5px;
+      box-shadow:0 6px 18px rgba(0,108,171,0.25);
+      border:2px solid #0c7fb8;
+    }
   </style>
 </head>
 <body>
@@ -40,8 +100,8 @@
         </div>
 
         <div class="input-group">
-          <label for="total-rebate">TOTAL REBATE (GST + PST)</label>
-          <input type="text" id="total-rebate" readonly value="$0">
+          <label for="hst-rebate">HST REBATE</label> <!-- renamed + emphasized -->
+          <input type="text" id="hst-rebate" class="result" readonly value="$0">
         </div>
       </div>
     </div>
@@ -60,32 +120,30 @@
       let gst = 0, pst = 0;
 
       if (fairMarketValue > 450000){
-        if (province === "ON"){ gst = 0; pst = 24000; }
-        else { gst = 0; pst = 0; } // AB & BC: no rebate >$450k
+        if (province === "ON"){ gst = 0; pst = 24000; }    // ON fixed PST rebate cap rule
+        else { gst = 0; pst = 0; }                         // AB & BC: none over $450k
       } else {
         // GST rebate (common)
         gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
 
-        // PST / provincial rebate
+        // Provincial portion
         if (province === "ON"){
           pst = Math.min(fairMarketValue * 0.08 * 0.75, 24000);
         } else {
-          pst = 0; // AB & BC: no provincial rebate here
+          pst = 0; // AB & BC have no PST rebate in this tool
         }
       }
 
       const total = Math.max(0, gst + pst);
-      document.getElementById("total-rebate").value = "$" + formatNumberWithCommas(total.toFixed(0));
+      document.getElementById("hst-rebate").value = "$" + formatNumberWithCommas(total.toFixed(0));
     }
 
-    // events
-    document.getElementById("fair-market-value").addEventListener("input", (e)=>{
+    document.getElementById("fair-market-value").addEventListener("input",(e)=>{
       e.target.value = prependDollarSymbol(e.target.value);
       calculateRebate();
     });
     document.getElementById("province").addEventListener("change", calculateRebate);
 
-    // init
     calculateRebate();
   </script>
 </body>
