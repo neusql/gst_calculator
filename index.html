@@ -6,74 +6,68 @@
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <title>Rebate Calculator</title>
   <style>
-    /* Container with smaller margin/padding */
+    :root{
+      --brand-dark:#112547;   /* updated dark blue */
+      --accent-green:#30AC37; /* rebate output */
+      --pale:#DEF2F4;
+      --field-width:220px;    /* unified width for all fields */
+    }
+
+    /* Center the whole calculator */
     #calculator-container{
       font-family: Montserrat, sans-serif;
-      display:flex;justify-content:center;
-      padding:10px;                  /* <= 10px around the calculator */
-      background:#fff;
+      display:flex; justify-content:center; align-items:center;
+      padding:10px; background:#fff; text-align:center;
     }
 
     .calculator-wrapper{
-      margin:10px auto;              /* <= 10px margin */
-      padding:12px 14px;
-      border-radius:12px;
-      text-align:center;
-      max-width:420px;               /* comfy width for stacked layout */
-      width:100%;
+      margin:10px auto; padding:12px 14px; border-radius:12px;
+      width:100%; max-width:420px;
     }
 
+    /* Header: "Calculator" on a new line */
+    .header-container{ line-height:1.1; }
     .header-container h1,.header-container h2{
-      display:inline;margin:0;color:#006cab;font-size:20pt;font-weight:700;
+      margin:0; color:var(--brand-dark); font-size:20pt; font-weight:700;
     }
+    .header-container h1{ display:block; }
+    .header-container h2{ display:block; margin-top:2px; }
 
-    /* Stacked column layout */
+    /* Stacked layout */
     .calculator{
-      display:flex;
-      flex-direction:column;         /* <= stacked */
-      gap:12px;                      /* spacing between rows */
-      margin-top:12px;
-      align-items:center;
+      display:flex; flex-direction:column; gap:12px; margin-top:12px; align-items:center;
     }
 
     .input-group{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      width:100%;
-      max-width:360px;               /* keeps fields a nice width */
-      margin:0 auto;
+      display:flex; flex-direction:column; gap:6px; align-items:center;
     }
 
     label{
-      font-family:'League Spartan',sans-serif;
-      font-weight:600;
-      font-size:11pt;
-      text-align:left;
-      color:#114b6b;
+      font-family:'League Spartan',sans-serif; font-weight:600; font-size:11pt;
+      color:#18324a; text-align:center;
     }
 
-    input,select{
+    /* All form controls same width */
+    input, select{
       padding:10px 12px;
       font-family:Montserrat,sans-serif;
       font-weight:700;
       font-size:15pt;
-      border:0;border-radius:10px;
+      border:0; border-radius:10px;
       text-align:center;
-      width:100%;
+      width:var(--field-width);
+      box-sizing:border-box;
     }
 
-    input:not([readonly]){color:#fff;background:#006cab;}
-    select, input[readonly]{background:#DEF2F4;color:#006cab;}
+    /* Input colors */
+    input:not([readonly]){ color:#fff; background:var(--brand-dark); }
+    select, input[readonly]{ background:var(--pale); color:var(--brand-dark); }
 
-    /* Accented final result style */
+    /* Final rebate result in green */
     .result{
-      background:#006cab !important;
-      color:#fff !important;
-      font-size:20pt;                /* bigger, more prominent */
-      letter-spacing:0.5px;
-      box-shadow:0 6px 18px rgba(0,108,171,0.25);
-      border:2px solid #0c7fb8;
+      background:var(--accent-green) !important; color:#fff !important;
+      font-size:20pt; letter-spacing:0.5px;
+      border:2px solid #27992f; box-shadow:0 6px 18px rgba(39,153,47,0.25);
     }
   </style>
 </head>
@@ -81,7 +75,8 @@
   <div id="calculator-container">
     <div class="calculator-wrapper">
       <div class="header-container">
-        <h1>FREE REBATE</h1><h2> CALCULATOR</h2>
+        <h1>FREE REBATE</h1>
+        <h2>CALCULATOR</h2>
       </div>
 
       <div class="calculator">
@@ -100,7 +95,7 @@
         </div>
 
         <div class="input-group">
-          <label for="hst-rebate">HST REBATE</label> <!-- renamed + emphasized -->
+          <label for="hst-rebate">HST REBATE</label>
           <input type="text" id="hst-rebate" class="result" readonly value="$0">
         </div>
       </div>
@@ -108,7 +103,6 @@
   </div>
 
   <script>
-    // helpers
     function formatNumberWithCommas(v){return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")}
     function prependDollarSymbol(v){v=v.replace(/[^0-9.-]+/g,"");return "$"+formatNumberWithCommas(v)}
 
@@ -120,17 +114,14 @@
       let gst = 0, pst = 0;
 
       if (fairMarketValue > 450000){
-        if (province === "ON"){ gst = 0; pst = 24000; }    // ON fixed PST rebate cap rule
-        else { gst = 0; pst = 0; }                         // AB & BC: none over $450k
+        if (province === "ON"){ gst = 0; pst = 24000; }
+        else { gst = 0; pst = 0; }
       } else {
-        // GST rebate (common)
         gst = Math.min(fairMarketValue * 0.05 * 0.36, 6300);
-
-        // Provincial portion
         if (province === "ON"){
           pst = Math.min(fairMarketValue * 0.08 * 0.75, 24000);
         } else {
-          pst = 0; // AB & BC have no PST rebate in this tool
+          pst = 0;
         }
       }
 
